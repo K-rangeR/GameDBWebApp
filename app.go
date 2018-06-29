@@ -4,6 +4,7 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 )
 
@@ -19,22 +20,33 @@ func main() {
 	server.ListenAndServe()
 }
 
+// root will serve up the home page
 func root(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Root")
+	t, err := template.ParseFiles("homepage.html")
+	if err != nil {
+		fmt.Println("Unable to pare homepage.html", err.Error())
+	}
+	t.Execute(w, nil)
 }
 
+// contribute serves up the contribute page
 func contribute(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Contribute")
 }
 
+// searchByTitle will display the data on the specified game
 func searchByTitle(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Title")
 }
 
+// searchByDeveloper will display a list of games made by the
+// specified developer
 func searchByDeveloper(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Developer")
 }
 
+// searchByRating will display a list of all games with the
+// specified rating
 func searchByRating(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Rating")
 }
