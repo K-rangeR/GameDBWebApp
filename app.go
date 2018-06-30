@@ -59,7 +59,9 @@ func submitGameToAPI(w http.ResponseWriter, r *http.Request) {
 	_, err = http.Post("http://localhost:8080/gameAPI/add", "application/json",
 		bytes.NewBuffer(jsonData))
 	if err != nil {
-		fmt.Println("Unable to connect to the game API")
+		fmt.Fprintln(w, "Was unable to submit that game to the DB, try again later")
+	} else {
+		fmt.Fprintln(w, "That game was successfuly submited")
 	}
 }
 
