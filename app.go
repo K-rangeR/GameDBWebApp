@@ -23,6 +23,9 @@ func main() {
 	http.HandleFunc("/", root)
 	http.HandleFunc("/contribute", contribute)
 	http.HandleFunc("/submit", submitGameToAPI)
+	http.HandleFunc("/getgame/title", serveTitleInput)
+	http.HandleFunc("/getgame/developer", serveDeveloperInput)
+	http.HandleFunc("/getgame/rating", serveRatingInput)
 	http.HandleFunc("/search/title", searchByTitle)
 	http.HandleFunc("/search/developer", searchByDeveloper)
 	http.HandleFunc("/search/rating", searchByRating)
@@ -61,8 +64,20 @@ func submitGameToAPI(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Fprintln(w, "Was unable to submit that game to the DB, try again later")
 	} else {
-		fmt.Fprintln(w, "That game was successfuly submited")
+		fmt.Fprintln(w, "That game was successfully submitted")
 	}
+}
+
+func serveTitleInput(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func serveDeveloperInput(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func serveRatingInput(w http.ResponseWriter, r *http.Request) {
+
 }
 
 // searchByTitle will display the data on the specified game
