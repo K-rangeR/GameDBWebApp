@@ -10,6 +10,7 @@ import (
 	"net/http"
 )
 
+// Game represents some data that is part of a vidio game
 type Game struct {
 	Title     string `json:"title"`
 	Developer string `json:"developer"`
@@ -69,7 +70,11 @@ func submitGameToAPI(w http.ResponseWriter, r *http.Request) {
 }
 
 func serveTitleInput(w http.ResponseWriter, r *http.Request) {
-
+	t, err := template.ParseFiles("searchByTitle.html")
+	if err != nil {
+		fmt.Println("Unable to parse searchByTitle.html")
+	}
+	t.Execute(w, nil)
 }
 
 func serveDeveloperInput(w http.ResponseWriter, r *http.Request) {
@@ -82,7 +87,17 @@ func serveRatingInput(w http.ResponseWriter, r *http.Request) {
 
 // searchByTitle will display the data on the specified game
 func searchByTitle(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Title")
+	title := r.FormValue("title")
+	resp, err := http.Get("http://localhost:8080/gameAPI/" + title) // make this better
+	if err != nil {
+		fmt.Fprintln(w, "Could not connect to the DB, try again later")
+	}
+	var game Game
+	dataLen := resp.ContentLength
+	jsonData := make([]byte, dataLen)
+	resp.Body.Read(jsonData)
+	json.Unmarshal(jsonData, &game)
+	fmt.Fprintln(w, fmt.Sprintln("Result:", game.Title, game.Developer, game.Rating)) // out will be better later
 }
 
 // searchByDeveloper will display a list of games made by the
