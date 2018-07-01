@@ -125,17 +125,11 @@ func searchByDeveloper(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var games []Game
-	dataLen := resp.ContentLength
-	jsonData := make([]byte, dataLen)
-	resp.Body.Read(jsonData)
-	err = json.Unmarshal(jsonData, &games)
+	err = unmarshalJSON(&games, resp)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	// Add better output
-	for _, game := range games {
-		fmt.Fprintln(w, game)
-	}
+	fmt.Fprintln(w, games)
 }
 
 // searchByRating will display a list of all games with the
@@ -148,15 +142,22 @@ func searchByRating(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var games []Game
-	dataLen := resp.ContentLength
-	jsonData := make([]byte, dataLen)
-	resp.Body.Read(jsonData)
-	err = json.Unmarshal(jsonData, &games)
+	err = unmarshalJSON(&games, resp)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	// Add better output
-	for _, game := range games {
-		fmt.Fprintln(w, game)
-	}
+	fmt.Fprintln(w, games)
+}
+
+// unmarshalJSON will convert the game API's json respnse into
+// a slice of games
+func unmarshalJSON(game *[]Game, r *http.Response) (err error) {
+	dataLen := r.ContentLength
+	jsonData := make([]byte, dataLen)
+	_, err = r.Body.Read(jsonData)
+	// if err != nil {
+	// 	return
+	// }
+	err = json.Unmarshal(jsonData, game)
+	return
 }
