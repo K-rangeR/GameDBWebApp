@@ -17,11 +17,6 @@ type Game struct {
 	Rating    string `json:"rating"`
 }
 
-// GameList represents a list of games
-type GameList struct {
-	games []Game `json:"games"`
-}
-
 func main() {
 	server := http.Server{
 		Addr: "127.0.0.1:8081",
@@ -94,8 +89,14 @@ func serveDeveloperInput(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, nil)
 }
 
+// serveRatingInput will serve up the html page that allows the client to
+// search for all games with the specified rating
 func serveRatingInput(w http.ResponseWriter, r *http.Request) {
-
+	t, err := template.ParseFiles("htmlpages/searchByRating.html")
+	if err != nil {
+		fmt.Println("Unable to parse searchByRating.html")
+	}
+	t.Execute(w, nil)
 }
 
 // searchByTitle will display the data on the specified game
@@ -127,7 +128,10 @@ func searchByDeveloper(w http.ResponseWriter, r *http.Request) {
 	dataLen := resp.ContentLength
 	jsonData := make([]byte, dataLen)
 	resp.Body.Read(jsonData)
-	json.Unmarshal(jsonData, &games)
+	err = json.Unmarshal(jsonData, &games)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 	// Add better output
 	for _, game := range games {
 		fmt.Fprintln(w, game)
@@ -137,5 +141,22 @@ func searchByDeveloper(w http.ResponseWriter, r *http.Request) {
 // searchByRating will display a list of all games with the
 // specified rating
 func searchByRating(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Rating")
+	rating := r.FormValue("rating")
+	resp, err := http.Get("http://localhost:8080/gameAPI/rating/" + rating)
+	if err != nil {
+		fmt.Fprintln(w, "Could not connect to the DB, try again later")
+		return
+	}
+	var games []Game
+	dataLen := resp.ContentLength
+	jsonData := make([]byte, dataLen)
+	resp.Body.Read(jsonData)
+	err = json.Unmarshal(jsonData, &games)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	// Add better output
+	for _, game := range games {
+		fmt.Fprintln(w, game)
+	}
 }
