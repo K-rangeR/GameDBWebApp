@@ -168,13 +168,20 @@ func unmarshalJSON(game *[]Game, r *http.Response) (err error) {
 
 // parseList will return an html page containing a list of games to the client
 func parseList(w http.ResponseWriter, games []Game) {
-	gamesAsString := make([]string, 0)
-	for _, game := range games {
-		gamesAsString = append(gamesAsString, game.String())
-	}
+	output := getGameListOutput(games)
 	t, err := template.ParseFiles("htmlpages/gamelist.html")
 	if err != nil {
 		fmt.Println("Error parsing game list")
 	}
-	t.Execute(w, gamesAsString)
+	t.Execute(w, output)
+}
+
+// getGameListOutput returns a slice of strings where each
+// string represents a game from the games parameter
+func getGameListOutput(games []Game) []string {
+	gamesAsString := make([]string, 0)
+	for _, game := range games {
+		gamesAsString = append(gamesAsString, game.String())
+	}
+	return gamesAsString
 }
