@@ -17,6 +17,10 @@ type Game struct {
 	Rating    string `json:"rating"`
 }
 
+func (g *Game) String() string {
+	return fmt.Sprintf("%s %s %s", g.Title, g.Developer, g.Rating)
+}
+
 func main() {
 	server := http.Server{
 		Addr: "127.0.0.1:8081",
@@ -129,7 +133,7 @@ func searchByDeveloper(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	fmt.Fprintln(w, games)
+	parseList(w, games)
 }
 
 // searchByRating will display a list of all games with the
@@ -146,7 +150,7 @@ func searchByRating(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	fmt.Fprintln(w, games)
+	parseList(w, games)
 }
 
 // unmarshalJSON will convert the game API's json respnse into
@@ -160,4 +164,17 @@ func unmarshalJSON(game *[]Game, r *http.Response) (err error) {
 	// }
 	err = json.Unmarshal(jsonData, game)
 	return
+}
+
+// parseList will return an html page containing a list of games to the client
+func parseList(w http.ResponseWriter, games []Game) {
+	gamesAsString := make([]string, 0)
+	for _, game := range games {
+		gamesAsString = append(gamesAsString, game.String())
+	}
+	t, err := template.ParseFiles("htmlpages/gamelist.html")
+	if err != nil {
+		fmt.Println("Error parsing game list")
+	}
+	t.Execute(w, gamesAsString)
 }
