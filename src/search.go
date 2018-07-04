@@ -7,10 +7,17 @@ import (
 	"net/http"
 )
 
+const (
+	apiTitleEndPoint     = "http://localhost:8080/gameAPI/"
+	apiDeveloperEndPoint = "http://localhost:8080/gameAPI/developer/"
+	apiRatingEndPoint    = "http://localhost:8080/gameAPI/rating/"
+	gameListPagePath     = "../htmlpages/gamelist.html"
+)
+
 // searchByTitle will display the data on the specified game
 func searchByTitle(w http.ResponseWriter, r *http.Request) {
 	title := r.FormValue("title")
-	resp, err := http.Get("http://localhost:8080/gameAPI/" + title) // make this better
+	resp, err := http.Get(apiTitleEndPoint + title)
 	if err != nil {
 		fmt.Fprintln(w, "Could not connect to the DB, try again later")
 		return
@@ -20,14 +27,14 @@ func searchByTitle(w http.ResponseWriter, r *http.Request) {
 	jsonData := make([]byte, dataLen)
 	resp.Body.Read(jsonData)
 	json.Unmarshal(jsonData, &game)
-	fmt.Fprintln(w, fmt.Sprintln("Result:", game.Title, game.Developer, game.Rating)) // out will be better later
+	fmt.Fprintln(w, fmt.Sprintln("Result:", game.Title, game.Developer, game.Rating))
 }
 
 // searchByDeveloper will display a list of games made by the
 // specified developer
 func searchByDeveloper(w http.ResponseWriter, r *http.Request) {
 	developer := r.FormValue("developer")
-	resp, err := http.Get("http://localhost:8080/gameAPI/developer/" + developer)
+	resp, err := http.Get(apiDeveloperEndPoint + developer)
 	if err != nil {
 		fmt.Fprintln(w, "Could not connect to the DB, try again later")
 		return
@@ -44,7 +51,7 @@ func searchByDeveloper(w http.ResponseWriter, r *http.Request) {
 // specified rating
 func searchByRating(w http.ResponseWriter, r *http.Request) {
 	rating := r.FormValue("rating")
-	resp, err := http.Get("http://localhost:8080/gameAPI/rating/" + rating)
+	resp, err := http.Get(apiRatingEndPoint + rating)
 	if err != nil {
 		fmt.Fprintln(w, "Could not connect to the DB, try again later")
 		return
@@ -73,7 +80,7 @@ func unmarshalJSON(game *[]Game, r *http.Response) (err error) {
 // parseList will return an html page containing a list of games to the client
 func parseList(w http.ResponseWriter, games []Game) {
 	output := getGameListOutput(games)
-	t, err := template.ParseFiles("../htmlpages/gamelist.html")
+	t, err := template.ParseFiles(gameListPagePath)
 	if err != nil {
 		fmt.Println("Error parsing game list")
 	}
