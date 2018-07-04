@@ -8,10 +8,15 @@ import (
 	"net/http"
 )
 
+const (
+	contributePagePath = "../htmlpages/contribute.html"
+	apiAddEndPoint     = "http://localhost:8080/gameAPI/add"
+)
+
 // contribute serves up the contribute page so the client can
 // add to the game DB
 func contribute(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("../htmlpages/contribute.html")
+	t, err := template.ParseFiles(contributePagePath)
 	if err != nil {
 		fmt.Println("Unable to parse contribute.html")
 	}
@@ -26,8 +31,7 @@ func submitGameToAPI(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println("Error creating json")
 	}
-	_, err = http.Post("http://localhost:8080/gameAPI/add", "application/json",
-		bytes.NewBuffer(jsonData))
+	_, err = http.Post(apiAddEndPoint, "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
 		fmt.Fprintln(w, "Was unable to submit that game to the DB, try again later")
 	} else {
