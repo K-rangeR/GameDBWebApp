@@ -17,7 +17,7 @@ const (
 // searchByTitle will display the data on the specified game
 func searchByTitle(w http.ResponseWriter, r *http.Request) {
 	title := r.FormValue("title")
-	resp, err := http.Get(apiTitleEndPoint + title) // test this
+	resp, err := http.Get(apiTitleEndPoint + title)
 	if err != nil {
 		fmt.Fprintln(w, "Could not connect to the DB, try again later")
 		return
