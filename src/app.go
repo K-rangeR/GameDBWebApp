@@ -6,6 +6,14 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"path"
+)
+
+const (
+	homePagePath       = "../htmlpages/homepage.html"
+	titleInputPath     = "../htmlpages/searchByTitle.html"
+	developerInputPath = "../htmlpages/searchByDeveloper.html"
+	ratingInputPath    = "../htmlpages/searchByRating.html"
 )
 
 func main() {
@@ -26,39 +34,32 @@ func main() {
 
 // root will serve up the home page
 func root(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("../htmlpages/homepage.html")
-	if err != nil {
-		fmt.Println("Unable to parse homepage.html", err.Error())
-	}
-	t.Execute(w, nil)
+	serveInputPage(w, homePagePath)
 }
 
 // serveTitleInput will serve up the html page that allows the client
 // search the game DB by the games title
 func serveTitleInput(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("../htmlpages/searchByTitle.html")
-	if err != nil {
-		fmt.Println("Unable to parse searchByTitle.html")
-	}
-	t.Execute(w, nil)
+	serveInputPage(w, titleInputPath)
 }
 
 // serveDeveloperInput will serve up the html page that allows the client
 // to search for all games created by the specified developer
 func serveDeveloperInput(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("../htmlpages/searchByDeveloper.html")
-	if err != nil {
-		fmt.Println("Unable to parse searchByDeveloper.html")
-	}
-	t.Execute(w, nil)
+	serveInputPage(w, developerInputPath)
 }
 
 // serveRatingInput will serve up the html page that allows the client to
 // search for all games with the specified rating
 func serveRatingInput(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("../htmlpages/searchByRating.html")
+	serveInputPage(w, ratingInputPath)
+}
+
+// serveInputPage will serve up the specified html page to the client
+func serveInputPage(w http.ResponseWriter, pathToPage string) {
+	t, err := template.ParseFiles(pathToPage)
 	if err != nil {
-		fmt.Println("Unable to parse searchByRating.html")
+		fmt.Println("Could not parse", path.Base(pathToPage))
 	}
 	t.Execute(w, nil)
 }
