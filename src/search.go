@@ -107,6 +107,7 @@ func getGameListOutput(games []Game) []string {
 // determine if the game was successfully located. Returns true if status
 // code is 200, and displays an error message and returns false otherwise
 func searchSuccessful(resp *http.Response, w http.ResponseWriter) bool {
+	fmt.Println("Code:", resp.StatusCode)
 	if resp.StatusCode == 404 {
 		fmt.Fprintln(w, "Could not find that game anywhere in the database")
 		return false
