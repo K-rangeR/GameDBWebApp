@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -73,10 +74,9 @@ func searchByRating(w http.ResponseWriter, r *http.Request) {
 // unmarshalJSON will convert the game API's json respnse into
 // a slice of games
 func unmarshalJSON(game *[]Game, r *http.Response) (err error) {
-	dataLen := r.ContentLength
-	jsonData := make([]byte, dataLen)
-	_, err = r.Body.Read(jsonData)
+	jsonData, err := ioutil.ReadAll(r.Body)
 	if err != nil {
+		fmt.Println("error in unmarshalJSON")
 		return
 	}
 	err = json.Unmarshal(jsonData, game)
