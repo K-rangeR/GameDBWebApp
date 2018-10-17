@@ -31,8 +31,9 @@ func submitGameToAPI(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println("Error creating json")
 	}
-	_, err = http.Post(apiAddEndPoint, "application/json", bytes.NewBuffer(jsonData))
-	if err != nil {
+
+	resp, err := http.Post(apiAddEndPoint, "application/json", bytes.NewBuffer(jsonData))
+	if err != nil || resp.StatusCode == http.StatusInternalServerError {
 		fmt.Fprintln(w, "Was unable to submit that game to the DB, try again later")
 	} else {
 		fmt.Fprintln(w, "That game was successfully submitted")
