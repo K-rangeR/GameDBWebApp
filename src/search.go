@@ -83,16 +83,13 @@ func searchBy(endPoint, by string) ([]Game, error) {
 // searchSuccessful will check the status code of the game API response to
 // determine if the game was successfully located
 func searchSuccessful(statusCode int) error {
-	// replace with switch
-	if statusCode == http.StatusNotFound {
-		fmt.Println("games not found")
-		return fmt.Errorf("that game was not found anywhere is the database")
-	} else if statusCode != http.StatusOK {
-		fmt.Println("other error")
-		return fmt.Errorf("the database is having an issue at the moment")
-	} else {
-		fmt.Println("games found")
+	switch statusCode {
+	case http.StatusOK:
 		return nil
+	case http.StatusNotFound:
+		return fmt.Errorf("that game was not found anywhere in the database")
+	default:
+		return fmt.Errorf("the databasd is having an issue at the moment")
 	}
 }
 
