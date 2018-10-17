@@ -86,10 +86,10 @@ func searchSuccessful(statusCode int) error {
 	// replace with switch
 	if statusCode == http.StatusNotFound {
 		fmt.Println("games not found")
-		return GameNotFoundError{}
+		return fmt.Errorf("that game was not found anywhere is the database")
 	} else if statusCode != http.StatusOK {
 		fmt.Println("other error")
-		return APIError{}
+		return fmt.Errorf("the database is having an issue at the moment")
 	} else {
 		fmt.Println("games found")
 		return nil
