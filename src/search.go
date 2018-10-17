@@ -23,13 +23,15 @@ func searchByTitle(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Could not connect to the DB, try again later")
 		return
 	}
-	if searchSuccessful(resp, w) {
+	if err = searchSuccessful(resp.StatusCode); err == nil {
 		var game Game
 		dataLen := resp.ContentLength
 		jsonData := make([]byte, dataLen)
 		resp.Body.Read(jsonData)
 		json.Unmarshal(jsonData, &game)
 		fmt.Fprintln(w, fmt.Sprintln("Result:", game.Title, game.Developer, game.Rating))
+	} else {
+		reportError(w, err)
 	}
 }
 
@@ -37,37 +39,60 @@ func searchByTitle(w http.ResponseWriter, r *http.Request) {
 // specified developer
 func searchByDeveloper(w http.ResponseWriter, r *http.Request) {
 	developer := r.FormValue("developer")
-	resp, err := http.Get(apiDeveloperEndPoint + developer)
+	games, err := searchBy(apiDeveloperEndPoint, developer)
 	if err != nil {
-		fmt.Fprintln(w, "Could not connect to the DB, try again later")
+		reportError(w, err)
 		return
 	}
-	if searchSuccessful(resp, w) {
-		var games []Game
-		err = unmarshalJSON(&games, resp)
-		if err != nil {
-			fmt.Println(err.Error())
-		}
-		parseList(w, games)
-	}
+	parseList(w, games)
 }
 
 // searchByRating will display a list of all games with the
 // specified rating
 func searchByRating(w http.ResponseWriter, r *http.Request) {
 	rating := r.FormValue("rating")
-	resp, err := http.Get(apiRatingEndPoint + rating)
+	games, err := searchBy(apiRatingEndPoint, rating)
 	if err != nil {
-		fmt.Fprintln(w, "Could not connect to the DB, try again later")
+		reportError(w, err)
 		return
 	}
-	if searchSuccessful(resp, w) {
-		var games []Game
-		err = unmarshalJSON(&games, resp)
-		if err != nil {
-			fmt.Println(err.Error())
-		}
-		parseList(w, games)
+	parseList(w, games)
+}
+
+// searchBy will send an http GET request to the API in search
+// for games that match some criteria (by)
+func searchBy(endPoint, by string) ([]Game, error) {
+	resp, err := http.Get(endPoint + by)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = searchSuccessful(resp.StatusCode); err != nil {
+		return nil, err
+	}
+
+	var games []Game
+	err = unmarshalJSON(&games, resp)
+	if err != nil {
+		fmt.Println(err.Error())
+		return nil, err
+	}
+	return games, nil
+}
+
+// searchSuccessful will check the status code of the game API response to
+// determine if the game was successfully located
+func searchSuccessful(statusCode int) error {
+	// replace with switch
+	if statusCode == http.StatusNotFound {
+		fmt.Println("games not found")
+		return GameNotFoundError{}
+	} else if statusCode != http.StatusOK {
+		fmt.Println("other error")
+		return APIError{}
+	} else {
+		fmt.Println("games found")
+		return nil
 	}
 }
 
@@ -81,6 +106,11 @@ func unmarshalJSON(game *[]Game, r *http.Response) (err error) {
 	}
 	err = json.Unmarshal(jsonData, game)
 	return
+}
+
+// reportError will inform the client on the type of error that has occured
+func reportError(w http.ResponseWriter, err error) {
+	fmt.Fprintln(w, err.Error())
 }
 
 // parseList will send an html page containing a list of games to the client
@@ -101,19 +131,4 @@ func getGameListOutput(games []Game) []string {
 		gamesAsString = append(gamesAsString, game.String())
 	}
 	return gamesAsString
-}
-
-// searchSuccessful will check the status code of the game API response to
-// determine if the game was successfully located. Returns true if status
-// code is 200, and displays an error message and returns false otherwise
-func searchSuccessful(resp *http.Response, w http.ResponseWriter) bool {
-	if resp.StatusCode == 404 {
-		fmt.Fprintln(w, "Could not find that game anywhere in the database")
-		return false
-	} else if resp.StatusCode != 200 {
-		fmt.Fprintln(w, "The database is having issues at the moment")
-		return false
-	} else {
-		return true
-	}
 }
