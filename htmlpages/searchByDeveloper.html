@@ -1,14 +1,11 @@
-<!DOCTYPE html>
+{{ define "title" }}
+    <title> Search By Developer </title>
+{{ end }}
 
-<html>
-    <head>
-        <title> Search By Developer </title>
-    </head>
-    <body>
-        <p> Search for games created by a specific developer. </p> <br>
-        <form action="http://localhost:8081/search/developer" method="get">
-            Developer: <input type="text" name="developer"> <br>
-            <input type="submit">
-        </form>
-    </body>
-</html>
+{{ define "body" }}
+    <p> Search for games created by a specific developer. </p> <br>
+    <form action="http://localhost:8081/search/developer" method="get">
+        Developer: <input type="text" name="developer"> <br>
+        <input type="submit">
+    </form>
+{{ end }}

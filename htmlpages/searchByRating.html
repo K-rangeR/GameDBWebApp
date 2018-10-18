@@ -1,14 +1,11 @@
-<!DOCTYPE html>
+{{ define "title" }}
+    <title> Search By Rating </title>
+{{ end }}
 
-<html>
-    <head>
-        <title> Search By Rating </title>
-    </head>
-    <body>
-        <p> Search for games that have a specific rating. </p> <br>
-        <form action="http://localhost:8081/search/rating" method="get">
-            Rating: <input type="text" name="rating"> <br>
-            <input type="submit">
-        </form>
-    </body>
-</html>
+{{ define "body" }}
+    <p> Search for games that have a specific rating. </p> <br>
+    <form action="http://localhost:8081/search/rating" method="get">
+        Rating: <input type="text" name="rating"> <br>
+        <input type="submit">
+    </form>
+{{ end }}
