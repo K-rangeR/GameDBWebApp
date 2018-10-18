@@ -10,6 +10,7 @@ import (
 )
 
 const (
+	menuPagePath       = "../htmlpages/menu.html"
 	homePagePath       = "../htmlpages/homepage.html"
 	searchByPath       = "../htmlpages/searchBy.html"
 	titleInputPath     = "../htmlpages/searchByTitle.html"
@@ -35,11 +36,11 @@ func main() {
 
 // root will serve up the home page
 func root(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles(homePagePath)
+	t, err := template.ParseFiles(homePagePath, menuPagePath)
 	if err != nil {
 		fmt.Println("Could not parse", path.Base(homePagePath))
 	}
-	t.Execute(w, nil)
+	t.ExecuteTemplate(w, "home", nil)
 }
 
 // serveTitleInput will serve up the html page that allows the client
@@ -62,7 +63,7 @@ func serveRatingInput(w http.ResponseWriter, r *http.Request) {
 
 // serveInputPage will serve up the specified html page to the client
 func serveInputPage(w http.ResponseWriter, pathToPage string) {
-	t, err := template.ParseFiles(searchByPath, pathToPage)
+	t, err := template.ParseFiles(searchByPath, pathToPage, menuPagePath)
 	if err != nil {
 		fmt.Println("Could not parse", path.Base(pathToPage))
 		// TODO: do something more here

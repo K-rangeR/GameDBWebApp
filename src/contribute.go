@@ -16,11 +16,11 @@ const (
 // contribute serves up the contribute page so the client can
 // add to the game DB
 func contribute(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles(contributePagePath)
+	t, err := template.ParseFiles(contributePagePath, menuPagePath)
 	if err != nil {
 		fmt.Println("Unable to parse contribute.html")
 	}
-	t.Execute(w, nil)
+	t.ExecuteTemplate(w, "contribute", nil)
 }
 
 // submitGameToAPI will extract the client provided game data

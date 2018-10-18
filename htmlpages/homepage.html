@@ -1,11 +1,13 @@
+{{ define "home" }}
 <!DOCTYPE html>
-
 <html>
     <head>
         <title> Game Database </title>
     </head>
     <body>
-        <h1> Welcome! </h1>
+        {{ template "menu" }}
+        <h2> Welcome to the video game database, add or search for your favorite game! </h2>
+        <!-- <h1> Welcome! </h1>
         <ul>
             <li>
                 <a href="http://localhost:8081/contribute"> Contribute </a>
@@ -19,6 +21,7 @@
             <li>
                 <a href="http://localhost:8081/getgame/rating"> Search By Rating </a>
             </li>
-        </ul>
+        </ul> -->
     </body>
 </html>
+{{ end }}

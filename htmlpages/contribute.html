@@ -1,16 +1,18 @@
+{{ define "contribute" }}
 <!DOCTYPE html>
-
 <html>
     <head>
         <title> Contribute </title>
     </head>
     <body>
+        {{ template "menu" }}
         <h2> Enter Game Info </h2>
         <form action="http://localhost:8081/submit" method="post">
             Title: <input type="text" name="title"> <br>
             Developer: <input type="text" name="developer"> <br>
-            Rating: <input type="text" name="rating"> <br> 
+            Rating: <input type="text" name="rating"> <br>
             <input type="submit">
         </form>
     </body>
 </html>
+{{ end }}
