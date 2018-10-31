@@ -9,6 +9,7 @@ import (
 	"path"
 )
 
+// Relative file paths to the html
 const (
 	menuPagePath       = "../htmlpages/menu.html"
 	homePagePath       = "../htmlpages/homepage.html"
@@ -22,6 +23,7 @@ func main() {
 	server := http.Server{
 		Addr: "127.0.0.1:8081",
 	}
+
 	http.HandleFunc("/", root)
 	http.HandleFunc("/contribute", contribute)
 	http.HandleFunc("/submit", submitGameToAPI)
@@ -31,20 +33,25 @@ func main() {
 	http.HandleFunc("/search/title", searchByTitle)
 	http.HandleFunc("/search/developer", searchByDeveloper)
 	http.HandleFunc("/search/rating", searchByRating)
-	server.ListenAndServe()
+
+	err := server.ListenAndServe()
+	if err != nil {
+		fmt.Println("Could not start the server:", err)
+	}
 }
 
 // root will serve up the home page
 func root(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles(homePagePath, menuPagePath)
 	if err != nil {
-		fmt.Println("Could not parse", path.Base(homePagePath))
+		fmt.Println("root:", path.Base(homePagePath))
+		return
 	}
 	t.ExecuteTemplate(w, "home", nil)
 }
 
 // serveTitleInput will serve up the html page that allows the client
-// search the game DB by the games title
+// search the game DB by using the games title
 func serveTitleInput(w http.ResponseWriter, r *http.Request) {
 	serveInputPage(w, titleInputPath)
 }
@@ -61,12 +68,15 @@ func serveRatingInput(w http.ResponseWriter, r *http.Request) {
 	serveInputPage(w, ratingInputPath)
 }
 
-// serveInputPage will serve up the specified html page to the client
+// serveInputPage will serve up the given html page to the client
 func serveInputPage(w http.ResponseWriter, pathToPage string) {
 	t, err := template.ParseFiles(searchByPath, pathToPage, menuPagePath)
 	if err != nil {
-		fmt.Println("Could not parse", path.Base(pathToPage))
-		// TODO: do something more here
+		fmt.Println("serverInputPage:", path.Base(pathToPage), err)
+		return
 	}
-	t.ExecuteTemplate(w, "searchlayout", nil)
+	err = t.ExecuteTemplate(w, "searchlayout", nil)
+	if err != nil {
+		fmt.Println("serverInputPage:", err)
+	}
 }
