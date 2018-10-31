@@ -3,14 +3,15 @@ package main
 
 import "fmt"
 
-// Game represents some data that is part of a vidio game
+// Game represents the parts of a video game that the
+// database will track
 type Game struct {
 	Title     string `json:"title"`
 	Developer string `json:"developer"`
 	Rating    string `json:"rating"`
 }
 
-// String returns a string reprenting the game
+// String returns a string containing all the game info
 func (g *Game) String() string {
 	return fmt.Sprintf("%s %s %s", g.Title, g.Developer, g.Rating)
 }
