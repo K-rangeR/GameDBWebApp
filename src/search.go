@@ -29,7 +29,8 @@ func searchByTitle(w http.ResponseWriter, r *http.Request) {
 		jsonData := make([]byte, dataLen)
 		resp.Body.Read(jsonData)
 		json.Unmarshal(jsonData, &game)
-		fmt.Fprintln(w, fmt.Sprintln("Result:", game.Title, game.Developer, game.Rating))
+		//fmt.Fprintln(w, fmt.Sprintln("Result:", game.Title, game.Developer, game.Rating))
+		parseList(w, []Game{game})
 	} else {
 		reportError(w, err)
 	}
@@ -112,20 +113,9 @@ func reportError(w http.ResponseWriter, err error) {
 
 // parseList will send an html page containing a list of games to the client
 func parseList(w http.ResponseWriter, games []Game) {
-	output := getGameListOutput(games)
 	t, err := template.ParseFiles(gameListPagePath, menuPagePath)
 	if err != nil {
 		fmt.Println("Error parsing game list")
 	}
-	t.ExecuteTemplate(w, "gameslist", output)
-}
-
-// getGameListOutput returns a slice of strings where each
-// string represents a game from the games parameter
-func getGameListOutput(games []Game) []string {
-	gamesAsString := make([]string, 0)
-	for _, game := range games {
-		gamesAsString = append(gamesAsString, game.String())
-	}
-	return gamesAsString
+	t.ExecuteTemplate(w, "gameslist", games)
 }

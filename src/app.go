@@ -17,6 +17,7 @@ const (
 	titleInputPath     = "../htmlpages/searchByTitle.html"
 	developerInputPath = "../htmlpages/searchByDeveloper.html"
 	ratingInputPath    = "../htmlpages/searchByRating.html"
+	bootstrapPath      = "../htmlpages/bootstrapLinks.html"
 )
 
 func main() {

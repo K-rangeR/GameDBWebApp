@@ -3,9 +3,18 @@
 {{ end }}
 
 {{ define "body" }}
-    <p> Search for games that have a specific rating. </p> <br>
+    <div class="page-header">
+        <h3>Search for games that have a specific rating.</h3>
+    </div>
     <form action="http://localhost:8081/search/rating" method="get">
-        Rating: <input type="text" name="rating"> <br>
-        <input type="submit">
+        <div class="form-group">
+            <label for="rating">Rating:</label>
+            <input type="text" class="form-control" placeholder="Enter rating" name="rating">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-default">Search
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+        </div>
     </form>
 {{ end }}

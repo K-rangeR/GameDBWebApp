@@ -3,9 +3,18 @@
 {{ end }}
 
 {{ define "body" }}
-    <p> Search for games created by a specific developer. </p> <br>
+    <div class="page-header">
+        <h3>Search for games created by a specific developer</h3>
+    </div>
     <form action="http://localhost:8081/search/developer" method="get">
-        Developer: <input type="text" name="developer"> <br>
-        <input type="submit">
+        <div class="form-group">
+            <label for="developer">Developer:</label>
+            <input type="text" class="form-control" placeholder="Enter developer name" name="developer">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-default">Search
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+        </div>
     </form>
 {{ end }}

@@ -3,25 +3,22 @@
 <html>
     <head>
         <title> Game Database </title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </head>
     <body>
-        {{ template "menu" }}
-        <h2> Welcome to the video game database, add or search for your favorite game! </h2>
-        <!-- <h1> Welcome! </h1>
-        <ul>
-            <li>
-                <a href="http://localhost:8081/contribute"> Contribute </a>
-            </li>
-            <li>
-                <a href="http://localhost:8081/getgame/title"> Search By Title </a>
-            </li>
-            <li>
-                <a href="http://localhost:8081/getgame/developer"> Search By Developer </a>
-            </li>
-            <li>
-                <a href="http://localhost:8081/getgame/rating"> Search By Rating </a>
-            </li>
-        </ul> -->
+        <div class="container">
+            {{ template "menu" }}
+            <div class="page-header">
+                <h1>Game Database</h1>
+            </div>
+            <p>
+                Welcome to the game database, here you can contribute to the
+                database by adding any game you want or you can search for any
+                games that you have in mind.
+            </p>
+        </div>
     </body>
 </html>
 {{ end }}

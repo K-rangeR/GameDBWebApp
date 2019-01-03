@@ -1,7 +1,15 @@
 {{ define "menu" }}
-    <a href="/" style="margin-right: 20px;"> Go Home </a>
-    <a href="/contribute" style="margin-right: 20px;"> Contribute </a>
-    <a href="/getgame/title" style="margin-right: 20px;"> Search By Title </a>
-    <a href="/getgame/developer" style="margin-right: 20px;"> Search By Developer </a>
-    <a href="/getgame/rating" style="margin-right: 20px;"> Search By Rating </a>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">GameDB</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="/contribute">Contribute</a></li>
+                <li><a href="/getgame/title">Search By Title</a></li>
+                <li><a href="/getgame/developer">Search By Developer</a></li>
+                <li><a href="/getgame/rating">Search By Rating</a></li>
+            </ul>
+        </div>
+    </nav>
 {{ end }}

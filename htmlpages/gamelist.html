@@ -3,16 +3,33 @@
 <html>
     <head>
         <title> Games </title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </head>
     <body>
-        {{ template "menu" }}
-        <br>
-        Games: <br>
-        <ul>
-            {{range .}}
-                <li> {{.}} </li>
-            {{end}}
-        </ul>
+        <div class="container">
+            {{ template "menu" }}
+            <div class="page-header">
+                <h3>Games</h3>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <th>Title</th>
+                    <th>Developer</th>
+                    <th>Rating</th>
+                </thead>
+                <tbody>
+                    {{ range . }}
+                        <tr>
+                            <td>{{ .Title }}</td>
+                            <td>{{ .Developer }}</td>
+                            <td>{{ .Rating }}</td>
+                        </tr>
+                    {{ end }}
+                </tbody>
+            </table>
+        </div>
     </body>
 </html>
 {{ end }}

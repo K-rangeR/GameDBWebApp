@@ -3,9 +3,18 @@
 {{ end }}
 
 {{ define "body" }}
-    <p> Search for game using its title. </p> <br>
+    <div class="page-header">
+        <h3>Search for a game by its title</h3>
+    </div>
     <form action="http://localhost:8081/search/title" method="get">
-        Game Title: <input type="text" name="title"> <br>
-        <input type="submit">
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" class="form-control" placeholder="Enter title" name="title">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-default">Search
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+        </div>
     </form>
 {{ end }}
