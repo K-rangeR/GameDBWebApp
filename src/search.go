@@ -29,7 +29,6 @@ func searchByTitle(w http.ResponseWriter, r *http.Request) {
 		jsonData := make([]byte, dataLen)
 		resp.Body.Read(jsonData)
 		json.Unmarshal(jsonData, &game)
-		//fmt.Fprintln(w, fmt.Sprintln("Result:", game.Title, game.Developer, game.Rating))
 		parseList(w, []Game{game})
 	} else {
 		reportError(w, err)
