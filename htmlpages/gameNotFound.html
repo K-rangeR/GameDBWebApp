@@ -1,0 +1,27 @@
+{{ define "notfound" }}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <title>Not Found</title>
+    </head>
+    <body>
+        <div class="container">
+            {{ template "menu" }}
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h3>Game(s) Not Found</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>Looks like there are no games that match that criteria</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+{{ end }}

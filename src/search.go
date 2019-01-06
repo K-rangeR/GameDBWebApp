@@ -13,6 +13,7 @@ const (
 	apiDeveloperEndPoint = "http://localhost:8080/gameAPI/developer/"
 	apiRatingEndPoint    = "http://localhost:8080/gameAPI/rating/"
 	gameListPagePath     = "../htmlpages/gamelist.html"
+	gameNotFoundPagePath = "../htmlpages/gameNotFound.html"
 )
 
 // searchByTitle will display the data on the specified game
@@ -107,7 +108,13 @@ func unmarshalJSON(game *[]Game, r *http.Response) (err error) {
 
 // reportError will inform the client on the type of error that has occured
 func reportError(w http.ResponseWriter, err error) {
-	fmt.Fprintln(w, err.Error())
+	t, err := template.ParseFiles(gameNotFoundPagePath, menuPagePath)
+	if err != nil {
+		fmt.Println("reportError:", err)
+		fmt.Fprintln(w, "Looks like there are no games that match that criteria")
+		return
+	}
+	t.ExecuteTemplate(w, "notfound", nil)
 }
 
 // parseList will send an html page containing a list of games to the client
