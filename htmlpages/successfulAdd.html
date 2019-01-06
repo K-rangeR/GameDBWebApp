@@ -1,0 +1,25 @@
+{{ define "success" }}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <title>Success</title>
+    </head>
+    <body>
+        <div class="container">
+            {{ template "menu" }}
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Success</h3>
+                </div>
+                <div class="panel-body">
+                    <p>That game has been added to the database!</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+{{ end }}

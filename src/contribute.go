@@ -9,8 +9,10 @@ import (
 )
 
 const (
-	contributePagePath = "../htmlpages/contribute.html"
-	apiAddEndPoint     = "http://localhost:8080/gameAPI/add"
+	contributePagePath    = "../htmlpages/contribute.html"
+	successfulPagePath    = "../htmlpages/successfulAdd.html"
+	internalErrorPagePath = "../htmlpages/internalError.html"
+	apiAddEndPoint        = "http://localhost:8080/gameAPI/add"
 )
 
 // contribute serves up the contribute page so the client can
@@ -30,15 +32,34 @@ func submitGameToAPI(w http.ResponseWriter, r *http.Request) {
 	game := Game{r.PostFormValue("title"), r.PostFormValue("developer"), r.PostFormValue("rating")}
 	jsonData, err := json.Marshal(game)
 	if err != nil {
-		fmt.Println("Error creating json:", err)
-		fmt.Fprintln(w, "Looks like there was a problem, try again later")
+		sendErrorHTML(w)
 		return
 	}
 
 	resp, err := http.Post(apiAddEndPoint, "application/json", bytes.NewBuffer(jsonData))
 	if err != nil || resp.StatusCode == http.StatusInternalServerError {
-		fmt.Fprintln(w, "Was unable to submit that game to the DB, try again later")
+		sendErrorHTML(w)
 	} else {
-		fmt.Fprintln(w, "That game was successfully submitted")
+		sendSuccessHTML(w)
 	}
+}
+
+// sendSuccessHTML sends the successful add html page
+func sendSuccessHTML(w http.ResponseWriter) {
+	t, err := template.ParseFiles(successfulPagePath, menuPagePath)
+	if err != nil {
+		fmt.Println("sendSuccessHTML:", err)
+		fmt.Fprintln(w, "That game has been added to the database!")
+	}
+	t.ExecuteTemplate(w, "success", nil)
+}
+
+// sendErrorHTML sends the error reporting html page to the client
+func sendErrorHTML(w http.ResponseWriter) {
+	t, err := template.ParseFiles(internalErrorPagePath, menuPagePath)
+	if err != nil {
+		fmt.Println("sendErrorHTML:", err)
+		fmt.Fprintln(w, "Oops, looks like there was an error, please try again later")
+	}
+	t.ExecuteTemplate(w, "error", nil)
 }

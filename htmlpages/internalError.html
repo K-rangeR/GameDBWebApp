@@ -1,0 +1,25 @@
+{{ define "error" }}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <title>Error</title>
+    </head>
+    <body>
+        <div class="container">
+            {{ template "menu" }}
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Error</h3>
+                </div>
+                <div class="panel-body">
+                    <p>Oops, looks like there was an error, please try again later</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+{{ end }}
