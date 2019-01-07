@@ -108,7 +108,7 @@ func unmarshalJSON(game *[]Game, r *http.Response) (err error) {
 
 // reportError will inform the client on the type of error that has occured
 func reportError(w http.ResponseWriter, err error) {
-	t, err := template.ParseFiles(gameNotFoundPagePath, menuPagePath)
+	t, err := template.ParseFiles(gameNotFoundPagePath, menuPagePath, bootstrapPath)
 	if err != nil {
 		fmt.Println("reportError:", err)
 		fmt.Fprintln(w, "Looks like there are no games that match that criteria")
@@ -119,7 +119,7 @@ func reportError(w http.ResponseWriter, err error) {
 
 // parseList will send an html page containing a list of games to the client
 func parseList(w http.ResponseWriter, games []Game) {
-	t, err := template.ParseFiles(gameListPagePath, menuPagePath)
+	t, err := template.ParseFiles(gameListPagePath, menuPagePath, bootstrapPath)
 	if err != nil {
 		fmt.Println("Error parsing game list")
 	}

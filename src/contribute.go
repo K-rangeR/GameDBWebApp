@@ -18,7 +18,7 @@ const (
 // contribute serves up the contribute page so the client can
 // add a game to the game DB
 func contribute(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles(contributePagePath, menuPagePath)
+	t, err := template.ParseFiles(contributePagePath, menuPagePath, bootstrapPath)
 	if err != nil {
 		fmt.Println("Unable to parse contribute.html:", err)
 		return
@@ -46,7 +46,7 @@ func submitGameToAPI(w http.ResponseWriter, r *http.Request) {
 
 // sendSuccessHTML sends the successful add html page
 func sendSuccessHTML(w http.ResponseWriter) {
-	t, err := template.ParseFiles(successfulPagePath, menuPagePath)
+	t, err := template.ParseFiles(successfulPagePath, menuPagePath, bootstrapPath)
 	if err != nil {
 		fmt.Println("sendSuccessHTML:", err)
 		fmt.Fprintln(w, "That game has been added to the database!")
@@ -56,7 +56,7 @@ func sendSuccessHTML(w http.ResponseWriter) {
 
 // sendErrorHTML sends the error reporting html page to the client
 func sendErrorHTML(w http.ResponseWriter) {
-	t, err := template.ParseFiles(internalErrorPagePath, menuPagePath)
+	t, err := template.ParseFiles(internalErrorPagePath, menuPagePath, bootstrapPath)
 	if err != nil {
 		fmt.Println("sendErrorHTML:", err)
 		fmt.Fprintln(w, "Oops, looks like there was an error, please try again later")

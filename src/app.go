@@ -17,7 +17,7 @@ const (
 	titleInputPath     = "../htmlpages/searchByTitle.html"
 	developerInputPath = "../htmlpages/searchByDeveloper.html"
 	ratingInputPath    = "../htmlpages/searchByRating.html"
-	bootstrapPath      = "../htmlpages/bootstrapLinks.html"
+	bootstrapPath      = "../htmlpages/bootstraplinks.html"
 )
 
 func main() {
@@ -43,7 +43,7 @@ func main() {
 
 // root will serve up the home page
 func root(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles(homePagePath, menuPagePath)
+	t, err := template.ParseFiles(homePagePath, menuPagePath, bootstrapPath)
 	if err != nil {
 		fmt.Println("root:", path.Base(homePagePath))
 		return
@@ -71,7 +71,7 @@ func serveRatingInput(w http.ResponseWriter, r *http.Request) {
 
 // serveInputPage will serve up the given html page to the client
 func serveInputPage(w http.ResponseWriter, pathToPage string) {
-	t, err := template.ParseFiles(searchByPath, pathToPage, menuPagePath)
+	t, err := template.ParseFiles(searchByPath, pathToPage, menuPagePath, bootstrapPath)
 	if err != nil {
 		fmt.Println("serverInputPage:", path.Base(pathToPage), err)
 		return
